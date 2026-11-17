@@ -1,0 +1,1 @@
+F:\PROG\peripheral-battery\target\release\peripheral-battery.exe: F:\PROG\peripheral-battery\src\config.rs F:\PROG\peripheral-battery\src\devices.rs F:\PROG\peripheral-battery\src\icon.rs F:\PROG\peripheral-battery\src\main.rs F:\PROG\peripheral-battery\src\panel.rs
