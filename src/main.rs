@@ -136,7 +136,7 @@ unsafe fn delete_icons(hwnd: HWND) {
 unsafe fn alert(hwnd: HWND, index: usize, level: Level) {
     let mut data = notify_data(hwnd, DEVICE_IDS[index]);
     data.uFlags = NIF_INFO;
-    copy_w(&mut data.szInfoTitle, "Bateria baixa");
+    copy_w(&mut data.szInfoTitle, "VandoVolt — Bateria baixa");
     copy_w(
         &mut data.szInfo,
         &format!("{}: {}%", DEVICE_NAMES[index], level.percent),
@@ -153,7 +153,7 @@ unsafe fn popup_menu(hwnd: HWND) {
     let config = settings();
     let levels = *LEVELS.lock().unwrap();
     let menu = CreatePopupMenu();
-    add_item(menu, 0, "Peripheral Battery", MF_STRING | MF_DISABLED);
+    add_item(menu, 0, "VandoVolt", MF_STRING | MF_DISABLED);
     let headset = levels[0].map_or_else(
         || "Headset: indisponível".into(),
         |l| {
@@ -438,8 +438,10 @@ unsafe extern "system" fn window_proc(
                 2 => Some(1),
                 _ => None,
             };
-            if event == NIN_POPUPOPEN && device.is_some() {
-                schedule_panel(hwnd, device.unwrap());
+            if event == NIN_POPUPOPEN {
+                if let Some(device) = device {
+                    schedule_panel(hwnd, device);
+                }
             } else if event == NIN_POPUPCLOSE {
                 hide_panel(hwnd);
             } else if event == WM_CONTEXTMENU || event == WM_RBUTTONUP {
@@ -465,7 +467,7 @@ unsafe extern "system" fn window_proc(
 fn main() {
     unsafe {
         SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-        let mutex = CreateMutexW(null(), 0, w("Local\\PeripheralBatteryRust").as_ptr());
+        let mutex = CreateMutexW(null(), 0, w("Local\\VandoVolt").as_ptr());
         if mutex.is_null() {
             return;
         }
@@ -476,7 +478,7 @@ fn main() {
         *SETTINGS.lock().unwrap() = Some(Config::load());
         *TASKBAR_CREATED.lock().unwrap() = RegisterWindowMessageW(w("TaskbarCreated").as_ptr());
         let instance = GetModuleHandleW(null());
-        let class = w("PeripheralBatteryMessageWindow");
+        let class = w("VandoVoltMessageWindow");
         let mut window_class: WNDCLASSW = zeroed();
         window_class.lpfnWndProc = Some(window_proc);
         window_class.hInstance = instance;
@@ -489,7 +491,7 @@ fn main() {
         let hwnd = CreateWindowExW(
             WS_EX_TOOLWINDOW,
             class.as_ptr(),
-            w("Peripheral Battery").as_ptr(),
+            w("VandoVolt").as_ptr(),
             WS_OVERLAPPED,
             0,
             0,

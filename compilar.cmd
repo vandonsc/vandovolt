@@ -12,10 +12,10 @@ cargo test --target x86_64-pc-windows-msvc
 if errorlevel 1 goto fail
 cargo build --release --target x86_64-pc-windows-msvc
 if errorlevel 1 goto fail
- echo Executavel: target\x86_64-pc-windows-msvc\release\peripheral-battery.exe
- pause
- exit /b 0
+echo Executavel: target\x86_64-pc-windows-msvc\release\VandoVolt.exe
+pause
+exit /b 0
 :fail
- echo Falha na compilacao. Copie as mensagens acima para diagnostico.
- pause
- exit /b 1
+echo Falha na compilacao. Copie as mensagens acima para diagnostico.
+pause
+exit /b 1

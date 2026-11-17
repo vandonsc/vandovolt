@@ -109,7 +109,7 @@ pub unsafe fn create_sized_colored(
             }
             let samples = (SUPERSAMPLE * SUPERSAMPLE) as u32;
             target_pixels[(y * output + x) as usize] =
-                (a / samples) << 24 | (r / samples) << 16 | (g / samples) << 8 | b / samples;
+                (a / samples) << 24 | (r / samples) << 16 | (g / samples) << 8 | (b / samples);
         }
     }
     let mask = CreateBitmap(output, output, 1, 1, null_mut());

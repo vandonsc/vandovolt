@@ -69,7 +69,7 @@ pub unsafe fn create(instance: HINSTANCE) -> HWND {
     if !start_gdiplus() {
         return null_mut();
     }
-    let class = w("PeripheralBatteryHoverPanel");
+    let class = w("VandoVoltHoverPanel");
     let mut wc: WNDCLASSW = zeroed();
     wc.lpfnWndProc = Some(proc);
     wc.hInstance = instance;
@@ -79,7 +79,7 @@ pub unsafe fn create(instance: HINSTANCE) -> HWND {
     let hwnd = CreateWindowExW(
         WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE,
         class.as_ptr(),
-        w("Battery status").as_ptr(),
+        w("VandoVolt - Battery status").as_ptr(),
         WS_POPUP,
         0,
         0,
@@ -558,6 +558,7 @@ unsafe fn fill_ellipse(graphics: *mut GpGraphics, x: f32, y: f32, size: f32, col
     GdipFillEllipse(graphics, brush as *mut GpBrush, x, y, size, size);
     GdipDeleteBrush(brush as *mut GpBrush);
 }
+#[allow(clippy::too_many_arguments)]
 unsafe fn draw_text(
     graphics: *mut GpGraphics,
     hwnd: HWND,

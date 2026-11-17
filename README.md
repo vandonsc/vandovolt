@@ -1,16 +1,16 @@
-# Peripheral Battery 0.1.0
+# VandoVolt 0.1.0
 
-Aplicativo Windows 11 x64 em Rust, Win32/GDI e `hidapi`. Exibe as baterias do HyperX Cloud III Wireless e do NZXT Lift Elite Wireless como dois ícones independentes na área de notificação do Windows.
+VandoVolt é um monitor de bateria sem fio leve, seguro e de código aberto para Windows, desenvolvido em Rust. Usa Win32/GDI e `hidapi`. Exibe as baterias do HyperX Cloud III Wireless e do NZXT Lift Elite Wireless como dois ícones independentes na área de notificação do Windows.
 
 ## Compilação e instalação
 
 1. Instale o Rust com o toolchain MSVC, o Visual Studio Build Tools e o Windows SDK.
 2. Execute `compilar.cmd`. A primeira compilação pode precisar baixar as dependências do Cargo.
 3. Feche NGENUITY, NZXT CAM e outros aplicativos que possam consultar os mesmos dispositivos HID.
-4. Execute `target\x86_64-pc-windows-msvc\release\peripheral-battery.exe`.
-5. Para instalar em `%LOCALAPPDATA%\PeripheralBattery` e iniciar com o Windows, execute `instalar.cmd`.
+4. Execute `target\x86_64-pc-windows-msvc\release\VandoVolt.exe`.
+5. Para instalar em `%LOCALAPPDATA%\VandoVolt` e iniciar com o Windows, execute `instalar.cmd`.
 
-`desinstalar.cmd` remove o executável instalado, a configuração local e a entrada de inicialização automática.
+`desinstalar.cmd` remove o executável instalado e a entrada de inicialização automática, preservando as preferências locais.
 
 ## Uso
 
@@ -27,7 +27,7 @@ Aplicativo Windows 11 x64 em Rust, Win32/GDI e `hidapi`. Exibe as baterias do Hy
 - Por padrão, manter o ponteiro sobre um ícone abre após aproximadamente 500 ms um painel compacto com dispositivo, conexão, carga, barra de progresso, estado e tempo desde a última atualização. A opção pode ser desativada pelo menu.
 - O painel segue a direção “Fluent Native”, acompanha `AppsUseLightTheme` e usa superfície neutra para o periférico, status com indicador visual e texto, porcentagem em destaque e progresso arredondado.
 - Escala tipográfica do painel: dispositivo em 15,5 px semibold, status em 12,5 px, bateria em 32 px bold e última atualização em 12 px.
-- As preferências são gravadas em `%LOCALAPPDATA%\PeripheralBattery\config.ini`.
+- As preferências são gravadas em `%LOCALAPPDATA%\VandoVolt\config.ini`.
 - Branco indica estado normal, vermelho indica 10% ou menos, verde indica carregamento e cinza indica dispositivo indisponível.
 - Os alertas de bateria baixa são emitidos uma vez por ciclo, até o nível subir acima de 10% ou o dispositivo entrar em carregamento.
 
@@ -54,3 +54,13 @@ As matrizes `tray-mouse-states.png` e `tray-headset-states.png` mostram o indica
 ## Protocolos
 
 A leitura HID permanece isolada em `src/devices.rs`. Ela utiliza apenas consultas de telemetria e não altera firmware ou configurações dos periféricos.
+
+## Migração e repositório
+
+Na primeira execução, se ainda não existir uma configuração do VandoVolt, o arquivo `%LOCALAPPDATA%\PeripheralBattery\config.ini` é copiado de forma verificada para `%LOCALAPPDATA%\VandoVolt\config.ini`. A origem não é excluída. A migração é idempotente e não sobrescreve uma configuração nova existente. A entrada antiga `PeripheralBattery` em `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` é substituída por `VandoVolt` somente depois que a nova entrada é gravada com sucesso.
+
+Código-fonte e acompanhamento do projeto: [github.com/vandonsc/vandovolt](https://github.com/vandonsc/vandovolt). O desenvolvimento ocorre na branch `development`.
+
+## Identidade visual
+
+A marca e o ícone multipropósito ficam em `assets/branding/`. O recurso de versão e o ícone são incorporados ao `VandoVolt.exe` durante a compilação. Os ícones funcionais de mouse e headset e o painel flutuante mantêm a aparência existente.
